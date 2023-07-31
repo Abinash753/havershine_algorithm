@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelperUtil {
   getPermission() async {
@@ -64,6 +65,16 @@ class HelperUtil {
 
     double distance = earthRadius * c;
     return distance;
+  }
+
+  launchMaps(String address) async {
+    final query = Uri.encodeComponent(address);
+    final url = "https://www.google.com/maps/search/?api=1&query=$query";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Could not launch $url');
+    }
   }
 }
 
